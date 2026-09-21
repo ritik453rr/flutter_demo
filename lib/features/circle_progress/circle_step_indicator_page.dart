@@ -1,6 +1,7 @@
 import 'dart:math';
-import 'package:demo/flush_bar/flush_bar.dart';
 import 'package:flutter/material.dart';
+
+import '../flush_bar/flush_bar.dart';
 
 class CircleStepIndicatorPage extends StatefulWidget {
   const CircleStepIndicatorPage({super.key});

@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-class AppDateTimeFormatService {
+class AppDateTimeFormatter {
   // take date and return in this format: 26 July 2026
   static String fomatToDayMonthYear(String value) {
     if (value.isEmpty) return "";

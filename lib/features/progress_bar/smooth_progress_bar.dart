@@ -1,5 +1,6 @@
-import 'package:demo/circle_progress/circle_step_indicator_page.dart';
 import 'package:flutter/material.dart';
+
+import '../circle_progress/circle_step_indicator_page.dart';
 
 class SmoothProgressBarWidget extends StatefulWidget {
   const SmoothProgressBarWidget({super.key});
@@ -68,6 +69,5 @@ class _SmoothProgressBarWidgetState extends State<SmoothProgressBarWidget> {
         ),
       ),
     );
-  
   }
 }
