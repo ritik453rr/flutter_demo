@@ -8,6 +8,7 @@ import 'local_notification_service.dart';
 /// Manages Firebase Cloud Messaging and local notification handling throughout the application.
 class NotificationService {
   static String? fcmToken;
+  static final _messaging=FirebaseMessaging.instance;
 
   /// Initializes notification services, permissions, message handlers, and the FCM token.
   static Future<void> init() async {
@@ -18,10 +19,13 @@ class NotificationService {
 
   /// Configures Firebase Messaging listeners for background, foreground, and notification tap events.
   static Future<void> _initHandlers() async {
+    /// Registers the handler for messages received while the app is in the background.
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
+    /// Listens for messages received while the app is in the foreground.
     FirebaseMessaging.onMessage.listen(_onForegroundMessage);
+    /// Listens for notifications tapped by the user when the app is in the background.
     FirebaseMessaging.onMessageOpenedApp.listen(_onTapMessage);
-    final initialMessage = await LocalNotificationService.messaging
+    final initialMessage = await _messaging
         .getInitialMessage();
     if (initialMessage != null) {
       _handleNavigation(initialMessage.data);
@@ -45,7 +49,7 @@ class NotificationService {
   /// Gets the FCM token after the APNs token is available on iOS.
   static Future<void> getFcmToken() async {
     try {
-      fcmToken = await LocalNotificationService.messaging.getToken();
+      fcmToken = await _messaging.getToken();
       debugPrint("fcm: $fcmToken");
     } catch (e) {
       log("Error getting FCM token: $e");
