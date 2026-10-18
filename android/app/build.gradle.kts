@@ -55,3 +55,10 @@ dependencies {
     /// for Local Notification Add this dependency to enables Java 8+ APIs (like java.time) on older Android devices via desugaring.
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
+
+// ADDED
+repositories {
+    maven {
+        url = uri("${project(":bgeo_background_geolocation").projectDir}/libs")
+    }
+}

@@ -1,3 +1,4 @@
+import 'package:demo/core/service/location_service/location_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'core/service/notification/notification_service.dart';
@@ -8,6 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await NotificationService.init();
+  await LocationService.instance.initialize();
   runApp(const MyApp());
 }
 
@@ -24,5 +26,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

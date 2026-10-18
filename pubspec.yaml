@@ -48,6 +48,8 @@ dependencies:
   firebase_core: ^4.15.0
   phone_numbers_parser: ^9.0.26
   file_saver: ^0.4.0
+  bgeo_background_geolocation: ^0.4.0
+  cloud_firestore: ^6.10.0
   # cloud_firestore: ^6.6.0
 
 dev_dependencies:
