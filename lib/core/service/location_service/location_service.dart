@@ -50,8 +50,10 @@ class LocationService {
         bg.Config(
           desiredAccuracy: bg.desiredAccuracyHigh,
           distanceFilter: 0,
-          locationUpdateInterval: 60000, // 1 minute (in ms)
-          heartbeatInterval: 60, // 1 minute (in seconds)
+          locationUpdateInterval: 60000,
+          // 1 minute (in ms)
+          heartbeatInterval: 60,
+          // 1 minute (in seconds)
           stopOnTerminate: false,
           startOnBoot: true,
         ),
