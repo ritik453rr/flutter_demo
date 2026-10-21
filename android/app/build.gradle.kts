@@ -11,7 +11,7 @@ plugins {
 
 android {
     namespace = "com.example.demo"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = "28.2.13676358" // for local notification
 
     compileOptions {
@@ -52,13 +52,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-crashlytics")
-    /// for Local Notification Add this dependency to enables Java 8+ APIs (like java.time) on older Android devices via desugaring.
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 
-// ADDED
-repositories {
-    maven {
-        url = uri("${project(":bgeo_background_geolocation").projectDir}/libs")
-    }
-}

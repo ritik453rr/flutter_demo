@@ -1,6 +1,8 @@
-import 'package:demo/core/service/location_service/location_service.dart';
+import 'package:demo/core/service/location_service/location_tracking_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'core/service/location_service/background_service.dart';
 import 'core/service/notification/notification_service.dart';
 import 'features/home/home_page.dart';
 import 'firebase_options.dart';
@@ -8,8 +10,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await NotificationService.init();
-  await LocationService.instance.initialize();
+  await initializeBackgroundService();
   runApp(const MyApp());
 }
 
@@ -19,7 +20,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Main application configuration.
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),

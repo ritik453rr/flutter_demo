@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo/core/service/location_service/location_model.dart';
+import 'package:flutter/material.dart';
 
 class FirestoreServices {
   /// Instances
@@ -10,6 +11,14 @@ class FirestoreServices {
   static Future<void> sendUserLocation({
     required LocationModel location,
   }) async {
-    await fireStore.collection('locations').add(location.toJson());
+    try {
+      await fireStore.collection('locations').add(location.toJson());
+      debugPrint(
+        "location sent successfully to firestore:${location.toJson()}",
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
   }
 }
