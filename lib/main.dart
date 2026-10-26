@@ -1,16 +1,27 @@
-import 'package:demo/core/service/location_service/location_tracking_service.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:demo/core/constants/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'core/service/location_service/background_service.dart';
-import 'core/service/notification/notification_service.dart';
-import 'features/home/home_page.dart';
-import 'firebase_options.dart';
+import 'package:toastification/toastification.dart';
+import 'core/constants/app_keys.dart';
+import 'core/storage/app_storage.dart';
+import 'features/splash/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await initializeBackgroundService();
+
+  // Initialize GetStorage
+  await AppStorage.init();
+
+  // Load environment variables from .env
+  await dotenv.load(fileName: ".env");
+
+  // Initialize Supabase with loaded environment variables
+  await Supabase.initialize(
+    url: AppKeys.supabaseUrl,
+    publishableKey: AppKeys.supabaseAnonKey,
+  );
+
   runApp(const MyApp());
 }
 
@@ -20,9 +31,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+    return ToastificationWrapper(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        home: const SplashPage(),
+      ),
     );
   }
 }

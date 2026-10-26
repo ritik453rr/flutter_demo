@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/extension/sized_box_extension.dart';
 import '../../core/service/location_service/location_tracking_service.dart';
-import '../number_picker/number_picker.dart';
+import '../../core/service/supabase_service/supabase_service.dart';
+import '../../core/storage/app_storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,15 +14,43 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _selectedTiming = 15;
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  final _supabase = Supabase.instance.client;
 
-  static const Color _primaryAccent = Color(0xFFD4FE00);
-  static const Color _backButtonBg = Color(0xFF22281D);
+  Future<void> _logout() async {
+    await _supabase.auth.signOut();
+    if (mounted) {
+      AppStorage.logout(context);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    SupabaseService.instance.startSessionMonitoring();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      SupabaseService.instance.validateSession();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: _logout,
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -29,21 +59,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    LocationPermission permission =
-                        await Geolocator.checkPermission();
-                    if (permission != LocationPermission.always) {
-                      openAppSettings();
-                    } else {
-                      await LocationTrackingService.instance.startTracking();
-                    }
-                  },
-                  child: const Text('Start Tracking'),
-                ),
-
                 20.h,
-
                 ElevatedButton(
                   onPressed: () async {
                     await LocationTrackingService.instance.stopTracking();
